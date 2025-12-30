@@ -1,20 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View, Button } from 'react-native';
+import { AuthProvider, useAuth } from './src/features/auth/AuthContext';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import AuthScreen from './src/features/auth/AuthScreen';
+
+function Home() {
+	const { user, loading } = useAuth();
+
+	if (loading) return <Text>Loading...</Text>;
+	if (!user) return <AuthScreen />;
+
+	return (
+		<View style={{ padding: 24 }}>
+			<Text>Welcome to Unimate 🎓</Text>
+		</View>
+	);
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+	return (
+		<AuthProvider>
+			<Home />
+		</AuthProvider>
+	);
+}
